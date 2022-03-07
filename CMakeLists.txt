@@ -3,4 +3,4 @@ project(huffman C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(huffman main.c)
+add_executable(huffman main.c processFile.c processFile.h)
