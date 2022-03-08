@@ -1,6 +1,6 @@
 #include "processFile.h"
 
-FILE *openFile(char *fileName, int *length) {
+FILE *openFile(char *fileName, unsigned long long *length) {
     FILE *fr = fopen(fileName, "rb");
     if (!fr) {
         printf("Can't open the file!\n");
@@ -12,7 +12,7 @@ FILE *openFile(char *fileName, int *length) {
     return fr;
 }
 
-void fillDictionary(FILE *fr, const int *length, int *freq) {
+void fillDictionary(FILE *fr, const unsigned long long *length, int *freq) {
     for (int i = 0; i < *length; i++) {
         freq[(unsigned char) fgetc(fr)]++;
     }

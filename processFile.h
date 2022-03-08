@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FILE *openFile(char *fileName, int *length);
-void fillDictionary(FILE *fr, const int *length, int *freq);
+FILE *openFile(char *fileName, unsigned long long *length);
+void fillDictionary(FILE *fr, const unsigned long long *length, int *freq);
 
 #endif //HUFFMAN_PROCESSFILE_H

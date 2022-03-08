@@ -10,8 +10,6 @@ typedef struct Node {
     unsigned char symb;
     unsigned char isSymb;
     unsigned int freq;
-    unsigned char code[CODE_SIZE];
-    int level;
     struct Node *left, *right, *next;
 } Node;
 

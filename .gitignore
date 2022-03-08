@@ -1,3 +1,5 @@
 cmake-build-debug
 .idea/
 input.txt
+/new.txt
+/output.txt
