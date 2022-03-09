@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 
-#define CODE_SIZE 100
 #define MAX_CHAR 256
 
 typedef struct Node {

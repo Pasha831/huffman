@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "processFile.h"
-#include "list.h"
-#include "encoding.h"
-#include "decoding.h"
+#include "../headers/processFile.h"
+#include "../headers/list.h"
+#include "../headers/encoding.h"
+#include "../headers/decoding.h"
 
 int main() {
     FILE *fr;
@@ -16,7 +16,7 @@ int main() {
     Node *list = createList(freq);
     list = makeTreeFromList(list);
 
-    char dict[ASCII_COUNT][BYTE*BYTE] = { 0 };
+    char dict[ASCII_COUNT][ASCII_COUNT] = { 0 };
     calculateHuffmanCodes(list, dict);
 
     FILE *fw = fopen("output.txt", "wb");

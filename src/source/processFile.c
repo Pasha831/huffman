@@ -1,4 +1,4 @@
-#include "processFile.h"
+#include "../headers/processFile.h"
 
 FILE *openFile(char *fileName, unsigned long long *length) {
     FILE *fr = fopen(fileName, "rb");

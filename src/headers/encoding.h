@@ -21,7 +21,7 @@ typedef union bit2char {
 }bit2char;
 
 
-void calculateHuffmanCodes(Node *root, char dict[ASCII_COUNT][BYTE*BYTE]);
-void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char dict[ASCII_COUNT][BYTE*BYTE]);
+void calculateHuffmanCodes(Node *root, char dict[ASCII_COUNT][ASCII_COUNT]);
+void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char dict[ASCII_COUNT][ASCII_COUNT]);
 
 #endif //HUFFMAN_ENCODING_H

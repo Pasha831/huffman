@@ -1,31 +1,32 @@
-#include "encoding.h"
+#include "../headers/encoding.h"
 #include <string.h>
 
-void simmetric(const Node *root, char dict[ASCII_COUNT][BYTE*BYTE], char* code, int level)
+void simmetric(const Node *root, char dict[ASCII_COUNT][ASCII_COUNT], char* code, int level)
 {
     level++;
-    if (root->isSymb){
+    if (root->freq == 0) {  // root->freq == 0 - process tree with only one leaf, where right is empty
+        return;
+    } else if (root->isSymb) {
         strcpy(dict[root->symb], code);
     } else {
         code[level] = '0';
-        simmetric(root->left, dict, code, level);
+        simmetric(root->left, dict, code, level);  // move left
         code[level] = '1';
-        simmetric(root->right, dict, code, level);
+        simmetric(root->right, dict, code, level);  // move right
         code[level] = 0;
     }
     level--;
 }
 
 
-void calculateHuffmanCodes(Node *root, char dict[ASCII_COUNT][BYTE*BYTE]) {
-    char code[BYTE] = { 0 };
-    code[0] = '0';
-    int level = 0;
+void calculateHuffmanCodes(Node *root, char dict[ASCII_COUNT][ASCII_COUNT]) {
+    char code[ASCII_COUNT] = { 0 };
+    int level = -1;
     simmetric(root, dict, code, level);
 }
 
 
-void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char dict[ASCII_COUNT][BYTE*BYTE]) {
+void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char dict[ASCII_COUNT][ASCII_COUNT]) {
     int len = 0;
     int i = 0;
     int tail = 0;  // number of meaningless bits in the end of file
