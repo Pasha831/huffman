@@ -3,15 +3,12 @@
 
 #include <stdlib.h>
 
-#define CODE_SIZE 100
 #define MAX_CHAR 256
 
 typedef struct Node {
     unsigned char symb;
     unsigned char isSymb;
     unsigned int freq;
-    unsigned char code[CODE_SIZE];
-    int level;
     struct Node *left, *right, *next;
 } Node;
 
