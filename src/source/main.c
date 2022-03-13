@@ -8,7 +8,7 @@ int main() {
     FILE *fr;
     char inputFileName[] = "input.txt";
     unsigned long long fileLength;
-    int freq[MAX_CHAR] = { 0 };  // counter for each ascii element of file
+    int freq[ASCII_COUNT] = { 0 };  // counter for each ascii element of file
 
     fr = openFile(inputFileName, &fileLength);
     fillDictionary(fr, &fileLength, freq);
