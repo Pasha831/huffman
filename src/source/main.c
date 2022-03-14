@@ -23,6 +23,7 @@ int main() {
     FILE *decoded = fopen("new.txt", "wb");
     decodeFile(encoded, decoded, list);
 
+    showHappyEnd();
     clock_t end = clock();
     showExecutionTime(&start, &end);
 }

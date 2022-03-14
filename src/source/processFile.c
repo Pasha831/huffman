@@ -83,3 +83,8 @@ void showExecutionTime(const clock_t *start, const clock_t *end) {
     double time_spent = (double)(*end - *start) / CLOCKS_PER_SEC;
     printf("Time spent: %.3f seconds\n", time_spent);
 }
+
+void showHappyEnd() {
+    system("color 0A");
+    printf("Done!\n");
+}

@@ -18,6 +18,7 @@ typedef struct File {
     unsigned long long fileLength;
 } File;
 
+void showHappyEnd();
 void showExecutionTime(const clock_t *start, const clock_t *end);
 File initInputFile();
 File initOutputFile(File *inputFile);

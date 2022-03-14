@@ -51,14 +51,28 @@ void shiftBitsToLeft(char *str) {
     str[j] = 0;
 }
 
+void loadingBar(unsigned long long *printedBytes, const unsigned long long *readBytes, const unsigned long long *fileLength) {
+    char a = 177, b = 219, ret = 13;
+
+    double progress = (((double)*readBytes - (double)*printedBytes) / (double)*fileLength) * 100;
+    if ((int)progress >= 1) {
+        for (int i = 0; i < (int)progress; i++) {
+            printf("%c", b);
+            // Sleep(10);
+        }
+        *printedBytes = *readBytes;
+    }
+}
 
 void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char dict[ASCII_COUNT][ASCII_COUNT]) {
-    int readBytes = 0;  // number of already read bytes of a file
+    unsigned long long readBytes = 0;  // number of already read bytes of a file
     int tail = 0;  // number of meaningless bits in the end of file
     unsigned char buff[1] = { 0 };  // buffer to read single characters
     char str[ASCII_COUNT] = { 0 };  // buffer to store characters
     fseek(in, 0, SEEK_SET);  // return to the start of the file
+    unsigned long long printedBytes = 0;
 
+    printf("Compressing...\n");
     while (readBytes < *fileLength || strlen(str) > 0) {
         while (readBytes < *fileLength && strlen(str) < BYTE) {
             fread(buff, 1, 1, in);
@@ -72,9 +86,12 @@ void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char 
         bit2char symb;
         fillTheByte(&symb, str);
         fwrite(&symb.symb, 1, 1, out);
+        loadingBar(&printedBytes, &readBytes, fileLength);
 
         shiftBitsToLeft(str);
     }
     buff[0] = (unsigned char)tail;
     fwrite(buff, 1, 1, out);
+    printf("\n");
 }
+
