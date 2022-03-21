@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 
-#define MAX_CHAR 256
-
 typedef struct Node {
     unsigned char symb;
     unsigned char isSymb;

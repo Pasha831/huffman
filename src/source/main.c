@@ -1,17 +1,14 @@
-#include <stdio.h>
 #include "../headers/processFile.h"
 #include "../headers/list.h"
 #include "../headers/encoding.h"
 #include "../headers/decoding.h"
 
 int main() {
-    FILE *fr;
-    char inputFileName[] = "input.txt";
-    unsigned long long fileLength;
-    int freq[MAX_CHAR] = { 0 };  // counter for each ascii element of file
+    File inputFile = initInputFile();
+    int freq[ASCII_COUNT] = { 0 };  // counter for each ascii element of file
+    clock_t start = clock();  // just to see, how long it takes to encode & decode file
 
-    fr = openFile(inputFileName, &fileLength);
-    fillDictionary(fr, &fileLength, freq);
+    fillDictionary(inputFile.f, &inputFile.fileLength, freq);
 
     Node *list = createList(freq);
     list = makeTreeFromList(list);
@@ -19,11 +16,14 @@ int main() {
     char dict[ASCII_COUNT][ASCII_COUNT] = { 0 };
     calculateHuffmanCodes(list, dict);
 
-    FILE *fw = fopen("output.txt", "wb");
-    encodeFile(fr, fw, &fileLength, dict);
-    fclose(fw);
+    File outputFile = initOutputFile(&inputFile);
+    encodeFile(inputFile.f, outputFile.f, &inputFile.fileLength, dict);
 
-    FILE *encoded = fopen("output.txt", "rb");
+    FILE *encoded = fopen(outputFile.fileLocation, "rb");
     FILE *decoded = fopen("new.txt", "wb");
     decodeFile(encoded, decoded, list);
+
+    showHappyEnd();
+    clock_t end = clock();
+    showExecutionTime(&start, &end);
 }

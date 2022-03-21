@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "list.h"
+#include <windows.h>
+
 #define ASCII_COUNT 256
 #define BYTE 8
 
