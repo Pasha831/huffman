@@ -18,6 +18,7 @@ int main() {
 
     File outputFile = initOutputFile(&inputFile);
     encodeFile(inputFile.f, outputFile.f, &inputFile.fileLength, dict);
+    fclose(outputFile.f);
 
     FILE *encoded = fopen(outputFile.fileLocation, "rb");
     FILE *decoded = fopen("new.txt", "wb");
