@@ -95,3 +95,19 @@ void encodeFile(FILE* in, FILE* out, const unsigned long long *fileLength, char 
     printf("\n");
 }
 
+void printListToFile (FILE* file, Node *list){
+    Node* current = list;
+    while (current) {
+        fprintf(file, "%c.%u ", current->symb, current->freq);
+        current = current->next;
+    }
+}
+
+void createMeta (File* output, Node *list) {
+    char metaName[MAX_FILE_SIZE] = { 0 };
+    strcpy(metaName, output->rootFolder);
+    strcat(metaName, "meta.txt");
+    FILE *meta = fopen(metaName, "wt");
+    printListToFile (meta, list);
+    fclose(meta);
+}

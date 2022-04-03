@@ -60,3 +60,27 @@ void decodeFile(FILE *in, FILE *out, Node *root) {
         fwrite(&currentNode->symb, 1, 1, out);
     }
 }
+
+Node* metaToTree (FILE* meta) {
+    unsigned char symb;
+    unsigned int freq;
+    Node* head = (Node *)malloc(sizeof(Node));
+    head->next = NULL;
+    Node* node = head;
+    while(fscanf(meta, "%c", &symb) == 1) {
+        if (node->next) {
+            node = node->next;
+        }
+        fgetc(meta);
+        fscanf(meta, "%u", &freq);
+        node->symb = symb;
+        node->isSymb = 1;
+        node->freq = freq;
+        node->left = node->right = NULL;
+        node->next = (Node *)malloc(sizeof(Node));
+        fgetc(meta);
+    }
+    free(node->next);
+    node->next = NULL;
+    return makeTreeFromList(head);
+}
