@@ -71,7 +71,11 @@ Node* metaToTree (FILE* meta) {
         if (node->next) {
             node = node->next;
         }
-        fgetc(meta);
+        char bb = fgetc(meta);  // we spend here almost 2.5 (by Max's words) hours of our precious time, fuck this shit!
+        if (bb == '\n') {
+            symb = '\n';
+            fgetc(meta);
+        }
         fscanf(meta, "%u", &freq);
         node->symb = symb;
         node->isSymb = 1;

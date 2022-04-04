@@ -190,7 +190,7 @@ File openMetaFile(File *encoded) {
     strcat(meta.fileLocation, meta.fileName);
     strcat(meta.fileLocation, meta.fileExtension);
 
-    meta.f = fopen(meta.fileLocation, "rt");
+    meta.f = fopen(meta.fileLocation, "rb");
     if (!meta.f) {
         printf("Can't open meta.txt file!\n");
         exit(1);

@@ -5,6 +5,7 @@
 
 int main() {
     int action = 0;
+    printf("SUB! It's a huffman time!\n");
 
     do {
         printf("What do you want to do?\n"
@@ -18,7 +19,6 @@ int main() {
         switch (action) {
             case 1: {
                 File inputFile = initInputFile();
-                File outputFile = initOutputFile(&inputFile);
 
                 int freq[ASCII_COUNT] = { 0 };  // counter for each ascii element of file
                 clock_t start = clock();  // just to see, how long it takes to encode & decode file
@@ -26,6 +26,11 @@ int main() {
                 fillDictionary(inputFile.f, &inputFile.fileLength, freq);
 
                 Node *list = createList(freq);
+                if (!list) {
+                    printf("Compressing file is empty!\n");
+                    exit(1);
+                }
+                File outputFile = initOutputFile(&inputFile);
                 createMeta(&outputFile, list);
                 list = makeTreeFromList(list);
 
