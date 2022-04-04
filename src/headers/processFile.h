@@ -25,5 +25,8 @@ File initOutputFile(File *inputFile);
 void getFileInfo(char *fileLocation, char *rootFolder, char *fileExtension, char *fileName);
 FILE *openFile(char *fileName, unsigned long long *length);
 void fillDictionary(FILE *fr, const unsigned long long *length, int *freq);
+File openEncodedFile();
+File initDecodedFile(File *encoded);
+File openMetaFile(File *encoded);
 
 #endif //HUFFMAN_PROCESSFILE_H

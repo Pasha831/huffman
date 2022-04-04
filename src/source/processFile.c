@@ -3,7 +3,7 @@
 FILE *openFile(char *fileName, unsigned long long *length) {
     FILE *fr = fopen(fileName, "rb");
     if (!fr) {
-        printf("Can't open the file!\n");
+        printf("Can't open the file to encode!\n");
         exit(1);
     }
     fseek(fr, 0L, SEEK_END);
@@ -26,7 +26,7 @@ File initInputFile() {
 }
 
 void getFileInfo(char *fileLocation, char *rootFolder, char *fileExtension, char *fileName) {
-    printf("Insert file location:");
+    printf("\nInsert file location:");
     fgets(fileLocation, MAX_FILE_SIZE, stdin);
 
     fileLocation[strlen(fileLocation) - 1] = 0;  // delete useless '\n'
@@ -66,6 +66,9 @@ File initOutputFile(File *inputFile) {
     strcat(outputFile.fileName, "_compressed");
 
     strcat(outputFile.rootFolder, outputFile.fileName);
+    strcat(outputFile.rootFolder, "(");
+    strcat(outputFile.rootFolder, outputFile.fileExtension);  // to store an extension of file not in meta :)
+    strcat(outputFile.rootFolder, ")");
     strcat(outputFile.rootFolder, "\\");
     printf("Creating \"%s\" folder...\n", outputFile.fileName);
     mkdir(outputFile.rootFolder);
@@ -81,10 +84,117 @@ File initOutputFile(File *inputFile) {
 
 void showExecutionTime(const clock_t *start, const clock_t *end) {
     double time_spent = (double)(*end - *start) / CLOCKS_PER_SEC;
-    printf("Time spent: %.3f seconds\n", time_spent);
+    printf("Time spent: %.3f seconds\n\n", time_spent);
+    // system("color 07");
 }
 
 void showHappyEnd() {
-    system("color 0A");
+    // system("color 0A");
     printf("Done!\n");
+}
+
+File openEncodedFile() {
+    File encodedFile;
+
+    printf("\nInsert the path to compressed folder:");
+    fgets(encodedFile.rootFolder, MAX_FILE_SIZE, stdin);
+
+    // prettify rootFolder string
+    encodedFile.rootFolder[strlen(encodedFile.rootFolder) - 1] = 0;
+    if (encodedFile.rootFolder[0] == '"') {
+        strcpy(encodedFile.rootFolder, encodedFile.rootFolder + 1);
+    }
+    if (encodedFile.rootFolder[strlen(encodedFile.rootFolder) - 1] == '"') {
+        encodedFile.rootFolder[strlen(encodedFile.rootFolder) - 1] = 0;
+    }
+
+    // obtain the extension of the file from brackets
+    strcpy(encodedFile.fileExtension, encodedFile.rootFolder);
+    encodedFile.fileExtension[strlen(encodedFile.fileExtension) - 1] = 0;  // delete extra ")" at the end
+    for (int i = strlen(encodedFile.fileExtension) - 1; i >= 0; i--) {
+        if (encodedFile.fileExtension[i] == '.') {
+            strcpy(encodedFile.fileExtension, encodedFile.fileExtension + i);
+            break;
+        }
+    }
+
+    // obtain the file name from rootFolder string
+    strcpy(encodedFile.fileName, encodedFile.rootFolder);
+    int canDelete = 1;
+    for (int i = strlen(encodedFile.fileName) - 1; i >= 0; i--) {
+        if (encodedFile.fileName[i] == '_' && canDelete == 1) {
+            encodedFile.fileName[i] = 0;
+            canDelete = 0;
+        }
+        if (encodedFile.fileName[i] == '\\') {
+            strcpy(encodedFile.fileName, encodedFile.fileName + i + 1);
+            break;
+        }
+    }
+
+    // create a path to the file
+    strcpy(encodedFile.fileLocation, encodedFile.rootFolder);
+    strcat(encodedFile.fileLocation, "\\");
+    strcat(encodedFile.fileLocation, encodedFile.fileName);
+    strcat(encodedFile.fileLocation, "_compressed");
+    strcat(encodedFile.fileLocation, encodedFile.fileExtension);
+
+    // open encoded file
+    encodedFile.f = fopen(encodedFile.fileLocation, "rb");
+    if (!encodedFile.f) {  // show an error, if there is something wrong
+        // system("color 04");  // fuck it!
+        printf("Can't open the encoded file!\n");
+        exit(1);
+    }
+
+    return encodedFile;
+}
+
+File initDecodedFile(File *encoded) {
+    File decoded = *encoded;
+
+    // obtain a father folder of the compressed file
+    for (int i = strlen(decoded.rootFolder) - 1; i >= 0; i--) {
+        if (decoded.rootFolder[i - 1] == '\\') {
+            decoded.rootFolder[i] = 0;
+            break;
+        }
+    }
+
+    // create a path to the decoded file
+    strcpy(decoded.fileLocation, decoded.rootFolder);
+    strcat(decoded.fileLocation, decoded.fileName);
+    strcat(decoded.fileLocation, decoded.fileExtension);
+
+    decoded.f = fopen(decoded.fileLocation, "wb");
+    if (!decoded.f) {
+        printf("Can't open the decoded file!\n");
+        exit(1);
+    }
+
+    return decoded;
+}
+
+File openMetaFile(File *encoded) {
+    File meta = *encoded;
+
+    // change the extension to .txt
+    strcpy(meta.fileExtension, ".txt");
+
+    // change a name of the file to meta
+    strcpy(meta.fileName, "meta");
+
+    // create a path to the meta.txt file
+    strcpy(meta.fileLocation, meta.rootFolder);
+    strcat(meta.fileLocation, "\\");
+    strcat(meta.fileLocation, meta.fileName);
+    strcat(meta.fileLocation, meta.fileExtension);
+
+    meta.f = fopen(meta.fileLocation, "rt");
+    if (!meta.f) {
+        printf("Can't open meta.txt file!\n");
+        exit(1);
+    }
+
+    return meta;
 }
