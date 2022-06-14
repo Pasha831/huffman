@@ -2,6 +2,7 @@
 #define HUFFMAN_LIST_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct Node {
     unsigned char symb;

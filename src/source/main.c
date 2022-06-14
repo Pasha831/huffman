@@ -4,36 +4,73 @@
 #include "../headers/decoding.h"
 
 int main() {
-    File inputFile = initInputFile();
-    File outputFile = initOutputFile(&inputFile);
+    int action = 0;
+    printf("SUB! It's a huffman time!\n");
 
-    int freq[ASCII_COUNT] = { 0 };  // counter for each ascii element of file
-    clock_t start = clock();  // just to see, how long it takes to encode & decode file
+    do {
+        printf("What do you want to do?\n"
+               "1. Compress the file\n"
+               "2. Decompress the file\n"
+               "0. Exit\n"
+               "Action:");
+        scanf("%d", &action);
+        while (getchar() != '\n');  // to clean stdin buffer
 
-    fillDictionary(inputFile.f, &inputFile.fileLength, freq);
+        switch (action) {
+            case 1: {
+                File inputFile = initInputFile();
 
-    Node *list = createList(freq);
-    createMeta(&outputFile, list);
-    list = makeTreeFromList(list);
+                int freq[ASCII_COUNT] = { 0 };  // counter for each ascii element of file
+                clock_t start = clock();  // just to see, how long it takes to encode & decode file
 
-    char dict[ASCII_COUNT][ASCII_COUNT] = { 0 };
-    calculateHuffmanCodes(list, dict);
+                fillDictionary(inputFile.f, &inputFile.fileLength, freq);
 
-    encodeFile(inputFile.f, outputFile.f, &inputFile.fileLength, dict);
-    fclose(outputFile.f);
+                Node *list = createList(freq);
+                if (!list) {
+                    printf("Compressing file is empty!\n");
+                    exit(1);
+                }
+                File outputFile = initOutputFile(&inputFile);
+                createMeta(&outputFile, list);
+                list = makeTreeFromList(list);
 
-    FILE *encoded = fopen(outputFile.fileLocation, "rb");
-    FILE *decoded = fopen("new.txt", "wb");
+                char dict[ASCII_COUNT][ASCII_COUNT] = { 0 };
+                calculateHuffmanCodes(list, dict);
 
-    char metaName[MAX_FILE_SIZE] = { 0 };
-    strcpy(metaName, outputFile.rootFolder);
-    strcat(metaName, "meta.txt");
+                encodeFile(inputFile.f, outputFile.f, &inputFile.fileLength, dict);
+                fclose(outputFile.f);
+                fclose(inputFile.f);
 
-    FILE *meta = fopen(metaName, "rt");
-    Node* tree = metaToTree(meta);
-    decodeFile(encoded, decoded, tree);
+                showHappyEnd();
+                clock_t end = clock();
+                showExecutionTime(&start, &end);
+                break;
+            }
+            case 2: {
+                File encoded = openEncodedFile();
+                File decoded = initDecodedFile(&encoded);
+                File meta = openMetaFile(&encoded);
+                Node *tree = metaToTree(meta.f);
 
-    showHappyEnd();
-    clock_t end = clock();
-    showExecutionTime(&start, &end);
+                clock_t start = clock();  // let's measure the decoding time!
+                decodeFile(encoded.f, decoded.f, tree);
+                clock_t end = clock();
+
+                // only for Max <3
+                fclose(encoded.f);
+                fclose(decoded.f);
+                fclose(meta.f);
+
+                showHappyEnd();
+                showExecutionTime(&start, &end);
+
+                break;
+            }
+            case 0:
+                printf("\nHave a nice day, buddy!\n");
+                break;
+            default:
+                printf("\nGo fuck yourself, bastard!\nThink one more time and enter a correct number!\n\n");
+        }
+    } while (action);
 }
