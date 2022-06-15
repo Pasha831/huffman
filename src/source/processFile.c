@@ -33,7 +33,6 @@ void getFileInfo(char *fileLocation, char *rootFolder, char *fileExtension, char
     // check for the " character at the beginning and the end of a path
     if (fileLocation[0] == '"') {
         strcpy(fileLocation, fileLocation + 1);
-        // fileLocation = fileLocation + 1;
     }
     if (fileLocation[strlen(fileLocation) - 1] == '"') {
         fileLocation[strlen(fileLocation) - 1] = 0;
@@ -85,11 +84,9 @@ File initOutputFile(File *inputFile) {
 void showExecutionTime(const clock_t *start, const clock_t *end) {
     double time_spent = (double)(*end - *start) / CLOCKS_PER_SEC;
     printf("Time spent: %.3f seconds\n\n", time_spent);
-    // system("color 07");
 }
 
 void showHappyEnd() {
-    // system("color 0A");
     printf("Done!\n");
 }
 
@@ -142,7 +139,6 @@ File openEncodedFile() {
     // open encoded file
     encodedFile.f = fopen(encodedFile.fileLocation, "rb");
     if (!encodedFile.f) {  // show an error, if there is something wrong
-        // system("color 04");  // fuck it!
         printf("Can't open the encoded file!\n");
         exit(1);
     }
