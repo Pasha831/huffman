@@ -18,3 +18,6 @@
 1. 🔠 Simple (but working) menu to choose an action.
 2. ⚧ Capable of compressing any type of a file (telling the truth, almost each file type, except .txt and some others, are already compressed as much as possible).
 3. 🔝File can be compressed easily just with it's path on the computer and also it can be decompressed with the same simplicity only with a folder path of some previously decoded file.
+
+## Authors
+[Pasha M.](https://t.me/nightshift48) and [Maksim A.](https://t.me/maxveega)
