@@ -67,7 +67,7 @@ int main() {
                 break;
             }
             case 0:
-                printf("\nHave a nice day, goodbye!\n");
+                printf("\nHave a nice day, goodbye!");
                 break;
             default:
                 printf("\nChoose a correct number!\n\n");
