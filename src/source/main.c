@@ -5,7 +5,7 @@
 
 int main() {
     int action = 0;
-    printf("SUB! It's a huffman time!\n");
+    printf("Hello! It's a huffman compressor/decompressor!\n\n");
 
     do {
         printf("What do you want to do?\n"
@@ -67,10 +67,10 @@ int main() {
                 break;
             }
             case 0:
-                printf("\nHave a nice day, buddy!\n");
+                printf("\nHave a nice day, goodbye!\n");
                 break;
             default:
-                printf("\nGo fuck yourself, bastard!\nThink one more time and enter a correct number!\n\n");
+                printf("\nChoose a correct number!\n\n");
         }
     } while (action);
 }
