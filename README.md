@@ -21,3 +21,5 @@
 
 ## Authors
 [Pasha M.](https://t.me/nightshift48) and [Maksim A.](https://t.me/maxveega)
+
+[![image](https://user-images.githubusercontent.com/46136468/173902131-db74cad8-1ae6-49f6-8cb8-6d3179dc36e5.png)](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
